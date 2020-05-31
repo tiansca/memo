@@ -19,7 +19,9 @@ router.post('/',function(req, res, next) {
         hour:req.body.hour,
         minute:req.body.minute,
         second:req.body.second,
-        username:req.body.username
+        username:req.body.username,
+        isWorkDay: req.body.isWorkDay,
+        week: req.body.week.split(',')
     };
 
     Users.findOne({username:postData.username},function (err, data) {
@@ -117,14 +119,16 @@ router.post('/update',function(req, res, next) {
             second:req.body.second,
             username:req.body.username,
             email:req.body.email,
-            _id:req.body._id
+            _id:req.body._id,
+            isWorkDay: req.body.isWorkDay,
+            week: req.body.week.split(',')
         };
-        console.log(postData)
+        console.log('****', postData)
         Memo.findOne({"_id":postData._id},function (err,data) {
             if(err){
                 res.send({code:1,msg:'编辑失败'})
             }else {
-                Memo.update({"_id":postData._id},{"status":true,"rundate":postData.rundate,name:postData.name,content:postData.content, iscycle:postData.iscycle,hour:postData.hour,minute:postData.minute,email:postData.email},function (err,row) {
+                Memo.update({"_id":postData._id},{"status":true,"rundate":postData.rundate,name:postData.name,content:postData.content, iscycle:postData.iscycle,hour:postData.hour,minute:postData.minute,email:postData.email,isWorkDay:postData.isWorkDay, week: postData.week},function (err,row) {
                     if(err){
                         res.send({code:3,msg:'编辑失败'})
                     }else {

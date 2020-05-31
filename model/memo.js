@@ -27,6 +27,14 @@ var memoSchema = new Schema({
     status:{
         type:Boolean,
         default:true
+    },
+    week:{
+        type:Array,
+        default:[]
+    },
+    isWorkDay: {
+        type:Boolean,
+        default:false
     }
 })
 

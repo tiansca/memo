@@ -14,7 +14,12 @@
           </div>
           <div style="margin-top: 3px;font-size: 13px; color:#888;font-weight: 200">
             <span v-if="!item.iscycle" style="font-weight: 400">{{(new Date(item.rundate)).getFullYear() + '-' + ((new Date(item.rundate)).getMonth() + 1) + '-' + (new Date(item.rundate)).getDate()}}</span>
-            <span v-if="item.iscycle">每天</span>
+            <span v-if="item.iscycle && !item.isWorkDay">
+              <span v-for="(item1, index) in weekList" v-show="item.week.indexOf(String(index)) !== -1" style="padding: 0 2px">{{item1.label}}</span>
+            </span>
+            <span v-if="item.iscycle && item.isWorkDay">
+              <span>跳过工作日</span>
+            </span>
             <span> {{item.iscycle?'重复':'不重复'}}</span>
           </div>
         </div>
@@ -31,7 +36,29 @@ export default {
   name: 'memo',
   data () {
     return {
-      memoArr:[]
+      memoArr:[],
+      weekList: [{
+        label: '周日',
+        value: '0',
+      }, {
+        label: '周一',
+        value: 1,
+      }, {
+        label: '周二',
+        value: 2,
+      }, {
+        label: '周三',
+        value: 3,
+      }, {
+        label: '周四',
+        value: 4,
+      }, {
+        label: '周五',
+        value: 5,
+      }, {
+        label: '周六',
+        value: 6,
+      },]
     }
   },
   computed:{

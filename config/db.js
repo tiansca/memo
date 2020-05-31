@@ -2,7 +2,8 @@
  * Created by administrator on 2019/10/31.
  */
 var mongoose = require('mongoose');
-var url ="mongodb://root:tianshicong@localhost:27017/cms";
+var url ="mongodb://root:tianshicong@localhost:27017/memo";
+// var url ="mongodb://root:tianshicong@127.0.0.1:27017/cms";
 mongoose.set('useCreateIndex', true)
 mongoose.connect(url);
 var db = mongoose.connection;
