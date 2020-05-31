@@ -123,7 +123,7 @@ router.post('/update',function(req, res, next) {
             isWorkDay: req.body.isWorkDay,
             week: req.body.week.split(',')
         };
-        console.log('****', postData)
+        // console.log('****', postData)
         Memo.findOne({"_id":postData._id},function (err,data) {
             if(err){
                 res.send({code:1,msg:'编辑失败'})

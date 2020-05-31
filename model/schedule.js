@@ -13,8 +13,11 @@ var send = require('../model/mail')
 // }
 //
 // scheduleCronstyle();
+var date = ''
+var jiari = ''
 var updateSchedule = function () {
     console.log(global.memoLength)
+    const currDay = (new Date()).getDay()
     if(global.memoLength){
         for(var a = 0; a < global.memoLength; a++){
             schedule.cancelJob('tiansc' + a);
@@ -36,6 +39,9 @@ var updateSchedule = function () {
             var memoArr = data;
             for(let a = 0; a < data.length; a++){
                 if(data[a].iscycle){
+                    if ( data[a].week.indexOf(currDay) === -1) {
+                        continue
+                    }
                     var rule = data[a].second + ' ' + data[a].minute + ' ' + data[a].hour + ' * * *';
                     var emailData = {
                         to:data[a].email,

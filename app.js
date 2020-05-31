@@ -11,6 +11,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var mailRouter = require('./routes/mail');
 var memoRouter = require('./routes/memo');
+var jiari = require('./routes/jiari');
 
 
 
@@ -44,6 +45,7 @@ app.use('/users', usersRouter);
 // app.post('/users', usersRouter);
 app.use('/mail',mailRouter);
 app.use('/memo',memoRouter);
+app.use('/jiari',jiari);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
