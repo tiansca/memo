@@ -14,7 +14,7 @@ router.get('/',function(req, res, next) {
             }
         });
     } else {
-        res.send(-1)
+        res.send('-1')
     }
 });
 
