@@ -255,8 +255,13 @@
         if(this.$route.query.id){
             this.title = '编辑';
             this.memo = this.$store.getters.getMemoByid(this.$route.query.id)[0];
-            this.lastCycle = this.memo.week
-            this.cycleWeek = this.memo.week
+            if (this.memo.week.length > 1 || this.memo.week[0] !== '') {
+              this.lastCycle = this.memo.week
+              this.cycleWeek = this.memo.week
+            } else {
+              this.lastCycle = []
+              this.cycleWeek = []
+            }
             this.$set(this.memo, 'time', (this.memo.hour>9?this.memo.hour:('0' + this.memo.hour)) + ':' + (this.memo.minute>9?this.memo.minute:('0' + this.memo.minute)))
             this.$set(this.memo, 'date', new Date(this.memo.rundate))
         }else{

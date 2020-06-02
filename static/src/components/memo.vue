@@ -18,7 +18,7 @@
               <span v-for="(item1, index) in weekList" v-show="item.week.indexOf(String(index)) !== -1" style="padding: 0 2px">{{item1.label}}</span>
             </span>
             <span v-if="item.iscycle && item.isWorkDay">
-              <span>跳过工作日</span>
+              <span>跳过节假日</span>
             </span>
             <span> {{item.iscycle?'重复':'不重复'}}</span>
           </div>

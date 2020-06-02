@@ -5,8 +5,8 @@ import axios from 'axios';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 //基本配置
 const Util = {
-    baseUtl:'http://localhost:3000/'
-    // baseUtl:'http://106.13.66.238:3000/'
+    // baseUtl:'http://localhost:3000/'
+    baseUtl:'http://106.13.66.238:3000/'
 };
 
 //ajax 通用配置
