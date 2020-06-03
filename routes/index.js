@@ -10,10 +10,12 @@ router.get('/', function(req, res, next) {
 });
 router.get('/test', function (req, res, next) {
     var url="https://webapi.mybti.cn/Appointment/GetBalance";
-    var requestData={enterDates: ["20200603", "20200604"],
-    stationName: "天通苑站",
-    timeSlot: "0630-0930"}
-    httprequest(url,requestData).then(value => {
+    var requestData={
+        enterDates: [getTomorrow(true), getTomorrow()],
+        stationName: "天通苑站",
+        timeSlot: "0630-0930"
+    }
+    httprequest1(url,requestData).then(value => {
         res.send(value)
     }).catch(error => {
         res.send(error)
@@ -41,16 +43,18 @@ router.get('/yuyue', function (req, res, next) {
         snapshotWeekOffset: 0,
         stationName: "天通苑站",
         timeSlot: time}
-    httprequest(url,requestData, auth, mark).then(value => {
+    httprequest(url,requestData, auth, mark, 1).then(value => {
         res.send(value)
     }).catch(error => {
         res.send(error)
     })
 })
 
-var getTomorrow = function () {
+var getTomorrow = function (today) {
     var mingtian = new Date()
-    mingtian.setTime(mingtian.getTime()+24*60*60*1000)
+    if (!today) {
+        mingtian.setTime(mingtian.getTime()+24*60*60*1000)
+    }
     let date = ''
     const year = mingtian.getFullYear()
     const month = mingtian.getMonth() + 1
@@ -59,9 +63,67 @@ var getTomorrow = function () {
     return date
 }
 
-function httprequest(url,data, auth, mark){
+function httprequest(url,data, auth, mark, index){
+    if(index) {
+        index++
+    }
     var auth = auth || 'Y2M5MmQ0ZjMtMjVjZC00Nzc1LWI2OTAtNDk2YzY4NDZjYzZmLDE1OTE4NTc2NjE4MDIsRi9vNEhuOHV1VmtLbiszTmg3TmpCZENQRGtjPQ=='
-    var mark = data.timeSlot + ' ' + (mark ? mark : '')
+    return new Promise(function (resolve, reject) {
+        request({
+            url: url,
+            method: "POST",
+            json: true,
+            headers: {
+                "content-type": "application/json",
+                authorization: auth
+            },
+            body: data
+        }, function(error, response, body) {
+            if (!error && response.statusCode == 200) {
+                console.log(body) // 请求成功的处理逻辑
+                if (body.balance >= 0) {
+                    console.log('预约成功')
+                    send({
+                        to: '1264197264@qq.com',
+                        subject: '地铁预约成功',
+                        content: data.timeSlot + ' ' + (mark ? mark : '')
+                    })
+                } else {
+                    if(index <= 4) {
+                        setTimeout(() => {
+                            httprequest(url,data, auth, mark, index)
+                        }, 10000)
+                    }
+                    if (index === 5){
+                        send({
+                            to: '1264197264@qq.com',
+                            subject: '地铁预约失败',
+                            content: data.timeSlot + ' ' + (mark ? mark : '')
+                        })
+                    }
+                }
+                resolve(body)
+            } else {
+                if(index <= 4) {
+                    setTimeout(() => {
+                        httprequest(url,data, auth, mark, index)
+                    }, 10000)
+                }
+                if (index === 5){
+                    send({
+                        to: '1264197264@qq.com',
+                        subject: '地铁预约失败',
+                        content: data.timeSlot + ' ' + (mark ? mark : '')
+                    })
+                }
+                reject(body)
+            }
+        });
+    })
+
+}
+function httprequest1(url,data, auth){
+    var auth = auth || 'Y2M5MmQ0ZjMtMjVjZC00Nzc1LWI2OTAtNDk2YzY4NDZjYzZmLDE1OTE4NTc2NjE4MDIsRi9vNEhuOHV1VmtLbiszTmg3TmpCZENQRGtjPQ=='
     return new Promise(function (resolve, reject) {
         request({
             url: url,
@@ -76,27 +138,8 @@ function httprequest(url,data, auth, mark){
             console.log(body)
             if (!error && response.statusCode == 200) {
                 console.log(body) // 请求成功的处理逻辑
-                if (body.balance >= 0) {
-                    console.log('预约成功')
-                    send({
-                        to: '1264197264@qq.com',
-                        subject: '地铁预约成功',
-                        content: mark
-                    })
-                } else {
-                    send({
-                        to: '1264197264@qq.com',
-                        subject: '地铁预约失败',
-                        content: mark
-                    })
-                }
                 resolve(body)
             } else {
-                send({
-                    to: '1264197264@qq.com',
-                    subject: '地铁预约失败',
-                    content: mark
-                })
                 reject(body)
             }
         });
