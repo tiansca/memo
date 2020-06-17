@@ -78,9 +78,10 @@ var updateSchedule = function () {
                             subject: data[a].name,
                             content: data[a].content
                         }
+                        console.log(emailData)
                         emailDataArr.push(emailData)
-                        schedule.scheduleJob('tiansc' + a, rule, function () {
-                            send(emailDataArr[a])
+                        schedule.scheduleJob('tiansc' + emailDataArr.length, rule, function () {
+                            send(emailDataArr[emailDataArr.length - 1])
                         });
                         // schedule.scheduleJob('tiansc' + 0,'40 * * * * *',function () {
                         //     console.log('定时任务' + a)
@@ -94,10 +95,12 @@ var updateSchedule = function () {
                             subject: data[a].name,
                             content: data[a].content
                         }
+                        console.log(emailData)
                         emailDataArr.push(emailData)
-                        schedule.scheduleJob('tiansc' + a, data[a].rundate, function () {
+                        schedule.scheduleJob('tiansc' + emailDataArr.length, data[a].rundate, function () {
                             // console.log('生命，宇宙，一切的答案。。。!');
-                            send(emailDataArr[a])
+                            console.log(emailDataArr, emailDataArr.length)
+                            send(emailDataArr[emailDataArr.length - 1])
                         });
                     }
                 }
