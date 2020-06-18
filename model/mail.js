@@ -29,7 +29,7 @@ let mailOptions = {
 
 // 使用前面创建的传输器来发送邮件
 let send =function (opt,  flag) {
-    if (opt.to && opt.subject && opt.content) {
+    if (opt && opt.to && opt.subject && opt.content) {
         mailOptions.to = opt.to;
         mailOptions.subject = opt.subject;
         if (flag === 'html') {

@@ -25,26 +25,26 @@ var getToday = function () {
     return date
 }
 var updateSchedule = function () {
-    console.log(global.memoLength)
+    console.log('长度', global.memoLength)
     const currDay = (new Date()).getDay()
     if(global.memoLength){
         for(var a = 0; a < global.memoLength; a++){
-            schedule.cancelJob('tiansc' + a);
-            console.log('tiansc' + a)
+            schedule.cancelJob('tiansc' + (a + 1));
         }
     }
     var emailDataArr = []
     // var count = 0;
     var currTime = (new Date()).valueOf();
+    const nextMimutes = new Date(Date.now() + 60 * 1000)
+    const hour = nextMimutes.getHours()
+    const minute = nextMimutes.getMinutes()
     memo.find(
         {
-            "$or":[{"iscycle":true,"status" : true},{"rundate":{"$gt":Date.now()},"status" : true}]
+            "$or":[{"iscycle":true,"status" : true, "hour": hour, 'minute': minute},{"rundate":{"$gt":new Date(), "$lt": new Date(Date.now() + 60 * 1000)},"status" : true}]
         }, async function (err, data) {
             if (err) {
                 console.log(err)
             } else {
-                global.memoLength = data.length;
-                console.log(global.memoLength);
                 var memoArr = data;
                 // 设置节假日标识
                 const today = getToday()
@@ -78,32 +78,31 @@ var updateSchedule = function () {
                             subject: data[a].name,
                             content: data[a].content
                         }
-                        console.log(emailData)
                         emailDataArr.push(emailData)
-                        schedule.scheduleJob('tiansc' + emailDataArr.length, rule, function () {
-                            send(emailDataArr[emailDataArr.length - 1])
+                        console.log('插入', emailData)
+                        const dataLength = emailDataArr.length
+                        schedule.scheduleJob('tiansc' + dataLength, rule, function () {
+                            console.log('发送', emailDataArr[dataLength - 1])
+                            send(emailDataArr[dataLength - 1])
                         });
-                        // schedule.scheduleJob('tiansc' + 0,'40 * * * * *',function () {
-                        //     console.log('定时任务' + a)
-                        // })
-                        // schedule.scheduleJob('tiansc' + 1,'50 * * * * *',function () {
-                        //     console.log('定时任务2' + a)
-                        // })
                     } else {
                         var emailData = {
                             to: data[a].email,
                             subject: data[a].name,
                             content: data[a].content
                         }
-                        console.log(emailData)
+                        // console.log(emailData)
                         emailDataArr.push(emailData)
-                        schedule.scheduleJob('tiansc' + emailDataArr.length, data[a].rundate, function () {
+                        const dataLength = emailDataArr.length
+                        console.log('插入', emailData)
+                        schedule.scheduleJob('tiansc' + dataLength, data[a].rundate, function () {
                             // console.log('生命，宇宙，一切的答案。。。!');
-                            console.log(emailDataArr, emailDataArr.length)
-                            send(emailDataArr[emailDataArr.length - 1])
+                            console.log('发送', emailDataArr[dataLength - 1])
+                            send(emailDataArr[dataLength - 1])
                         });
                     }
                 }
+                global.memoLength = emailDataArr.length;
             }
         })
 
