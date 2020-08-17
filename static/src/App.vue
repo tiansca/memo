@@ -27,9 +27,9 @@ export default {
       }else{
         this.transitionName = 'slide-left';
       }
-      if(to.path == '/' && (!this.$store.state.user || !this.$store.state.user.username)){
+      if(to.path == '/' && (!this.$store.state.user || !this.$store.state.user.name)){
           this.$router.replace('/login')
-      }else if(to.path == '/login' && this.$store.state.user && this.$store.state.user.username){
+      }else if(to.path == '/login' && this.$store.state.user && this.$store.state.user.name){
           this.$router.replace('/')
       }
     },
@@ -43,26 +43,40 @@ export default {
     }
   },
   mounted(){
-      if(localStorage.getItem('username') && localStorage.getItem('password')){
-        var that = this;
-        this.$.ajax({
-          method:"POST",
-          url:'users/login',
-          data:this.qs({
-            username:localStorage.getItem('username'),
-            password:localStorage.getItem('password')
-          })
-        }).then((res=>{
-          if(res.data == 0){
-            this.$store.commit('setUserSession',res.user);
-          }else{
-            this.$store.commit('setUserSession',{username:'',password:''});
-            this.$router.replace('/login')
-          }
-        }))
+      // 判断是否登录
+    this.$.ajax({
+      method:"get",
+      url:'self'
+    }).then((res=>{
+      console.log(res.code)
+      if(res.code == 0){
+        this.$store.commit('setUserSession',res.data);
+        this.$router.push('/')
       }else{
-          this.$router.replace('/login')
+        this.$store.commit('setUserSession',{});
+        this.$router.push('/login')
       }
+    }))
+      // if(localStorage.getItem('username') && localStorage.getItem('password')){
+      //   var that = this;
+      //   this.$.ajax({
+      //     method:"POST",
+      //     url:'login',
+      //     data:this.qs({
+      //       username:localStorage.getItem('username'),
+      //       password:localStorage.getItem('password')
+      //     })
+      //   }).then((res=>{
+      //     if(res.data == 0){
+      //       this.$store.commit('setUserSession',res.user);
+      //     }else{
+      //       this.$store.commit('setUserSession',{username:'',password:''});
+      //       this.$router.push('/login')
+      //     }
+      //   }))
+      // }else{
+      //     this.$router.push('/login')
+      // }
 
     window.history.pushState(null, null, document.URL);
     // 给window添加一个popstate事件，拦截返回键，执行this.onBrowserBack事件，addEventListener需要指向一个方法

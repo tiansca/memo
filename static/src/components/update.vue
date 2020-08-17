@@ -28,7 +28,7 @@
       update(){
         this.$.ajax({
           method:"POST",
-          url:'users/update',
+          url:'update',
           data:this.qs({
             username:this.username,
             newPassword:this.newPassword,
@@ -42,8 +42,7 @@
               position: 'bottom',
               duration: 3000
             });
-            this.$store.commit('setUserSession',{username:'', password:''})
-            this.$router.push({path:'/login'});
+            this.logout()
           }else{
             this.$toast({
               message: '修改失败！',
@@ -55,7 +54,18 @@
       },
       back(){
         this.$router.push({path:'/'})
-      }
+      },
+      logout () {
+        this.$.ajax({
+          url: 'logout',
+          method: 'get'
+        }).then(res => {
+          if (res.code === 0) {
+            this.$store.commit('setUserSession',{})
+            this.$router.push({path:'/login'});
+          }
+        })
+      },
     },
     mounted(){
       console.log(this.username);

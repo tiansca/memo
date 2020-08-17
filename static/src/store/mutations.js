@@ -3,9 +3,13 @@
  */
 const mutations = {
   setUserSession(state, n){
+    if (n.id) {
+      n._id = n.id
+    }
+    if (n.username) {
+      n.name = n.username
+    }
     state.user = n;
-    localStorage.setItem('username', n.username);
-    localStorage.setItem('password', n.password);
   },
   setMemo(state, n){
     state.memoArr = n;

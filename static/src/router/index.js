@@ -5,9 +5,9 @@ import login from '@/components/login.vue'
 import sign from '@/components/sign.vue'
 import add from '@/components/add.vue'
 import update from '@/components/update.vue'
-const routerPush = Router.prototype.push
-Router.prototype.push = function push(location) {
-  return routerPush.call(this, location).catch(error=> error)
+const originalPush = Router.prototype.push
+Router.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
 }
 
 Vue.use(Router)

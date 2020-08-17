@@ -1,7 +1,7 @@
 <template>
   <div class="hello" style="height: 100%">
     <div class="topBar">
-      <span v-if="user" class="textButton username" @click="openUser">{{user.username}}</span>
+      <span v-if="user" class="textButton username" @click="openUser">{{user.name}}</span>
       <i  class="fa fa-plus" style="color: #666;font-size:24px;position: absolute;right: 12px;" @click="add"></i>
     </div>
     <div class="content">
@@ -69,10 +69,10 @@ export default {
   methods:{
       getList(){
           console.log(this.user)
-          if(this.user && this.user.username){
+          if(this.user && this.user.name){
             this.$.ajax({
               method:"GET",
-              url:'memo/getbyuser?username=' + this.user.username
+              url:'memo/memo/getbyuser?userid=' + this.user._id
             }).then((res=>{
               if(res.code == 0){
                   this.memoArr = res.data;
@@ -133,23 +133,33 @@ export default {
 //        })
         this.$messageBox({
           title: '用户信息',
-          message: '用户名：' + this.user.username + ' <br> ' + '邮箱：' + this.user.email,
+          message: '用户名：' + this.user.name + ' <br> ' + '邮箱：' + this.user.email,
           showCancelButton: true,
           confirmButtonText:'退出登录',
           cancelButtonText:'修改密码'
         }).then(action => {
           console.log(action);
           if(action == 'confirm'){
-            this.$store.commit('setUserSession',{username:'', password:''})
-            this.$router.replace('/login')
+            this.logout()
           }else {
-              this.$router.replace('/update')
+            this.$router.replace('/update')
           }
 
         }).catch((action)=>{
             console.log(action)
         })
-      }
+      },
+      logout () {
+        this.$.ajax({
+          url: 'logout',
+          method: 'get'
+        }).then(res => {
+          if (res.code === 0) {
+            this.$store.commit('setUserSession',{})
+            this.$router.push({path:'/login'});
+          }
+        })
+      },
   },
   watch:{
       user:{
@@ -161,7 +171,7 @@ export default {
       }
   },
   mounted(){
-      if(this.user && this.user.username){
+      if(this.user && this.user.name){
           this.getList()
       }
   }

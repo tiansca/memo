@@ -23,6 +23,7 @@ var memoSchema = new Schema({
         default:0
     },
     username:String,
+    userid: String,
     email:String,
     status:{
         type:Boolean,

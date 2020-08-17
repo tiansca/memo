@@ -3,7 +3,7 @@
  */
 var mongoose = require('mongoose');
 // var url ="mongodb://root:tianshicong@localhost:27017/memo";
-var url ="mongodb://root:tianshicong@127.0.0.1:27017/cms";
+var url ="mongodb://root:tianshicong@127.0.0.1:27017/memo";
 mongoose.set('useCreateIndex', true)
 mongoose.connect(url);
 var db = mongoose.connection;

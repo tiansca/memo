@@ -30,33 +30,33 @@
           console.log(this.password)
         this.$.ajax({
           method:"POST",
-          url:'users/login',
+          url:'login',
           data:this.qs({
             username:this.username,
             password:this.password
           })
         }).then((res=>{
             console.log(res)
-          if(res.data == 0){
+          if(res.code == 0){
             console.log("登录成功！");
             console.log(this)
-            this.$store.commit('setUserSession',res.user);
-            this.$router.replace('/')
-          }else if(res.data == 2){
+            this.$store.commit('setUserSession',res.data);
+            this.$router.push('/')
+          }else if(res.code == 2){
             this.$toast({
               message: '密码不正确！',
               position: 'bottom',
               duration: 3000
             });
-          }else if(res.data == 1){
+          }else if(res.code == 1){
             this.$toast({
               message: '用户不存在！',
               position: 'bottom',
               duration: 3000
             });
-          }else if(res.data == 3){
+          }else if(res.code == 3){
             this.$toast({
-              message: '用户未激活！',
+              message: '用户不可用！',
               position: 'bottom',
               duration: 3000
             });

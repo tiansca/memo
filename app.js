@@ -8,7 +8,7 @@ var db = require('./config/db.js');
 
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// var usersRouter = require('./routes/users');
 var mailRouter = require('./routes/mail');
 var memoRouter = require('./routes/memo');
 var jiari = require('./routes/jiari');
@@ -41,7 +41,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// app.use('/users', usersRouter);
 // app.post('/users', usersRouter);
 app.use('/mail',mailRouter);
 app.use('/memo',memoRouter);

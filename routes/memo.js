@@ -4,7 +4,6 @@
 var express = require('express');
 var router = express.Router();
 var Memo = require('../model/memo');
-var Users = require('../model/users');
 // var bodyParser = require('body-parser')
 // const db = require('../config/db')
 // var await = require('await');
@@ -20,29 +19,21 @@ router.post('/',function(req, res, next) {
         minute:req.body.minute,
         second:req.body.second,
         username:req.body.username,
+        userid:req.body.userid,
+        email:req.body.email,
         isWorkDay: req.body.isWorkDay,
         week: req.body.week.split(',')
-    };
-
-    Users.findOne({username:postData.username},function (err, data) {
-        if(err || !data){
-            res.send({data:-1,msg:'用户不存在'})
-        }else {
-            console.log(data);
-            var user = data;
-            postData.email = req.body.email || user.email
-            Memo.create(postData,function (err, data) {
-                if(err)  throw err;
-                console.log('新增');
-                // res.redirect('/userL')
-                res.send({data:0,msg:'新增成功'})
-            })
-        }
+    }
+    Memo.create(postData,function (err, data) {
+        if(err)  throw err;
+        console.log('新增');
+        // res.redirect('/userL')
+        res.send({data:0,msg:'新增成功'})
     })
 });
 router.get('/getbyuser',function(req, res, next) {
-    if(req.query && req.query.username){
-        Memo.find({username:req.query.username},function (err,data) {
+    if(req.query && req.query.userid){
+        Memo.find({userid:req.query.userid},function (err,data) {
             if(err){
                 res.send({data:1,msg:'查询失败'})
             }else {

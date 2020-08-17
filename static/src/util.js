@@ -2,11 +2,12 @@
  * Created by administrator on 2019/3/20.
  */
 import axios from 'axios';
+axios.defaults.withCredentials = true
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 //基本配置
 const Util = {
-    // baseUtl:'http://localhost:3000/'
-    baseUtl:'http://106.13.66.238:3000/'
+    // baseUtl:'http://localhost:3000/api/'
+    baseUtl:'http://182.92.210.246:3000/api/'
 };
 
 //ajax 通用配置

@@ -169,6 +169,7 @@
           this.memo.week = this.lastCycle.join(',')
           if(this.title == '新建'){
             this.memo.username = this.$store.state.user.username;
+            this.memo.userid = this.$store.state.user._id;
             console.log(this.memo);
             if(this.memo.rundate < Date.now() && !this.memo.iscycle){
               this.$toast({
@@ -180,7 +181,7 @@
             }
             this.$.ajax({
               method:"POST",
-              url:'memo',
+              url:'memo/memo',
               data:this.qs(this.memo)
             }).then((res=>{
               if(res.data == 0){
@@ -204,7 +205,7 @@
             }
             this.$.ajax({
               method:"POST",
-              url:'memo/update',
+              url:'memo/memo/update',
               data:this.qs(this.memo)
             }).then((res=>{
               if(res.code == 0){
@@ -221,7 +222,7 @@
         this.$messageBox.confirm('确定要删除此提醒吗？').then(action => {
           this.$.ajax({
             method:"GET",
-            url:'memo/remove?id=' + this.memo._id,
+            url:'memo/memo/remove?id=' + this.memo._id,
           }).then((res=>{
             if(res.code == 0){
               this.isSaved = true;

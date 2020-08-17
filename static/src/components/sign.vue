@@ -37,7 +37,7 @@
         }
         this.$.ajax({
           method:"POST",
-          url:'users',
+          url:'signup',
           data:this.qs({
             username:this.username,
             password:this.password,
@@ -45,7 +45,7 @@
           })
         }).then((res)=>{
           console.log(res)
-          if(res.data == 0){
+          if(res.code == 0){
             this.$toast({
               message: '注册成功！',
               position: 'bottom',
@@ -53,7 +53,7 @@
             });
             console.log("注册成功！");
             this.$router.push({path:'/login'});
-          }else if(res.data == 1){
+          }else if(res.code == 1){
             this.$toast({
               message: '用户名已被注册！',
               position: 'bottom',
