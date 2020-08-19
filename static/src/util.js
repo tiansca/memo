@@ -6,8 +6,8 @@ axios.defaults.withCredentials = true
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 //基本配置
 const Util = {
-    // baseUtl:'http://localhost:3000/api/'
-    baseUtl:'http://182.92.210.246:3000/api/'
+    baseUtl:'api/'
+    // baseUtl:'http://182.92.210.246:3000/api/'
 };
 
 //ajax 通用配置
