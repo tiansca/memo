@@ -4,7 +4,7 @@ var getToday = function () {
     const year = (new Date()).getFullYear()
     const month = (new Date()).getMonth() + 1
     const date1 = (new Date()).getDate()
-    date =  year + (month > 9 ? month : ('0' + String(month))) + (date1 > 9 ? date1 : ('0' + String(date1)))
+    date =  year + (month > 9 ? String(month) : ('0' + String(month))) + (date1 > 9 ? String(date1) : ('0' + String(date1)))
     return date
 }
 // 0:工作日   1:周末    2:节假日
