@@ -108,7 +108,7 @@ export default {
       switchStatus(a){
         this.$.ajax({
           method:"GET",
-          url:'memo/updatestatus?id=' + a._id
+          url:'memo/memo/updatestatus?id=' + a._id
         }).then((res=>{
           if(res.code == 0){
               this.getList()
