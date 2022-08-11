@@ -13,7 +13,7 @@ let transporter = nodemailer.createTransport({
     secure: true, // true for 465, false for other ports
     auth: {
         user: 'tian_shicong@163.com',
-        pass: 'tian0402' // 这里密码不是qq密码，是你设置的smtp授权码
+        pass: 'OPNFISKUBWDYOANP' // 这里密码不是qq密码，是你设置的smtp授权码
     }
 })
 
