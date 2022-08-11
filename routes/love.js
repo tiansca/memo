@@ -8,6 +8,7 @@ router.get('/sendEmail',async function (req, res, next) {
     const email = req.query.email
     const city = req.query.city
     const day = req.query.day || ''
+    const subject = req.query.subject || '暖暖的邮件'
     if (!email || !city) {
         res.send({
             error: '缺少参数',
@@ -26,7 +27,7 @@ router.get('/sendEmail',async function (req, res, next) {
         // console.log(data.data)
         send({
             to: email,
-            subject: 'love email',
+            subject: subject,
             content: data.data
         }, 'html')
         res.send({

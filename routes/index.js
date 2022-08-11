@@ -5,8 +5,9 @@ var getLove = require('../utils/getLove')
 /* 爱心邮件静态页面 */
 router.get('/', async function (req, res, next) {
     // const email = req.query.email
-    const city = req.query.city
-    const day = req.query.day
+    const city = req.query.city // 城市
+    const day = req.query.day // 纪念日，选填
+    const showNews = req.query.showNews || 'true' // 是否显示新闻，默认显示
     let memory = {}
     if (!city) {
         res.send({
@@ -43,8 +44,16 @@ router.get('/', async function (req, res, next) {
     } catch (e) {
         console.log(e)
     }
+    let news = []
+    if (showNews === 'true') {
+        try {
+            news = await getLove.getNews()
+        } catch (e) {
+            console.log(e)
+        }
+    }
     res.setHeader('Content-Type', 'text/html;charset=utf-8');
-    res.render('love', {weather, memory, one});
+    res.render('love', {weather, memory, one, news});
 });
 
 module.exports = router;

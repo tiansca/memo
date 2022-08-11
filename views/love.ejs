@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>天气邮件</title>
 </head>
 <body style="padding: 0;margin: 0">
-<div style="padding: 8px;max-width: 750px;margin: 0 auto;width: 100%;box-sizing: border-box">
-    <div style="position: relative; padding-top: 38px;margin-bottom: 24px; border: 1px solid #dcdcdc;padding-bottom: 16px">
+<div style="padding: 8px;max-width: 750px;margin: 0 auto;width: 100%;box-sizing: border-box;margin-top: 16px">
+    <div style="position: relative; padding-top: 38px;margin-bottom: 36px; border: 1px solid #dcdcdc;padding-bottom: 16px">
         <div style="position: absolute;top: 8px; left: 8px">
             <% if (weather.moreData.alert) { %>
                 <% weather.moreData.alert.forEach(function(item){%>
-                <span style="background: <%= item.level === '蓝色' ? '#3069F6' : (item.level === '黄色' ? '#FCFF10' : (item.level === '橙色' ? '#F79901' : '#D2302D' ))%>;color: #fff;padding: 3px 6px;margin-right: 8px;border-radius: 2px"><%=item.name %></span>
+                <span style="background: <%= item.level === '蓝色' ? '#3069F6' : (item.level === '黄色' ? '#FCFF10' : (item.level === '橙色' ? '#F79901' : '#D2302D' ))%>;color: #fff;padding: 3px 6px;margin-right: 8px;border-radius: 2px;text-shadow: 0 0 3px rgba(0,0,0,0.7)"><%=item.name %></span>
                 <% }) %>
             <% } %>
         </div>
@@ -20,30 +20,47 @@
         <div style="display: flex;align-items: center;justify-content: center">
             <img style="width: 120px" src="http://www.moji.com/templets/mojichina/images/weather/weather/w<%= weather.weatherType %>.png" alt="">
             <div style="margin-left: 18px">
-                <div style="font-size: 18px;color: #333">
+                <div style="font-size: 20px;color: #333">
                     <span><%= weather.city %>:</span>
                     <span><%= weather.weather %></span>
                 </div>
-                <div style="font-size: 20px; color: cornflowerblue;margin-top: 12px">
+                <div style="font-size: 24px; color: cornflowerblue;margin-top: 12px">
                     <%= weather.low %>℃ ~ <%= weather.high %>℃
                 </div>
             </div>
         </div>
     </div>
     <% if (memory.dayCount) { %>
-        <div style="font-size: 20px; font-weight: 600; text-align: center;letter-spacing: 2px">
+        <div style="font-size: 24px; font-weight: 600; text-align: center;letter-spacing: 2px">
             <%= memory.text %>
         </div>
-        <div style="margin: 8px 0 24px;font-size: 34px; color: coral;font-weight: 600; text-align: center">
+        <div style="margin: 8px 0 36px;font-size: 36px; color: coral;font-weight: 600; text-align: center">
             <%= memory.dayCount %>天
         </div>
     <% } %>
     <div style="position: relative">
         <img src="<%= one.img%>" alt="" style="width: 100%">
-        <div style="position: absolute;bottom: 0px;width: 100%;padding: 6px;box-sizing: border-box;background: rgba(220, 220, 220, 0.65);text-align: center;font-size: 14px;color: #333; font-style: italic">
+        <div style="position: absolute;bottom: 0px;width: 100%;padding: 6px;box-sizing: border-box;background: rgba(220, 220, 220, 0.65);text-align: center;font-size: 18px;color: #333; font-style: italic">
             <%= one.text %>
         </div>
     </div>
+
+    <% if (news && news.length) { %>
+        <div style="margin-top: 36px">
+            <% news.forEach(function(item){%>
+                <% if (item.type === 'text') { %>
+                    <div style="font-size: 24px;margin: 24px 0;color: #333"><%= item.data %></div>
+                <% } %>
+                <% if (item.type === 'img') { %>
+                    <img style="width: 100%" src="<%= item.data %>"></img>
+                <% } %>
+                <% if (item.type === 'video') { %>
+                    <span>视频链接：</span>
+                    <a target="_blank" href="<%= item.data %>"><%= item.data %></a>
+                <% } %>
+            <% }) %>
+        </div>
+    <% } %>
 
 
 </div>
