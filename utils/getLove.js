@@ -14,7 +14,6 @@ const getOneData = async () => {
     } catch (e) {
         console.log(e)
     }
-
 }
 
 const getWeather = async (city) => {
