@@ -94,10 +94,15 @@ async function openPage(url) {
             }
         }
         // console.log('list', list)
+        await page.close()
+        await browser.close();
+        browser = null
         return list
     } catch (e) {
         console.log(e)
         await page.close()
+        await browser.close();
+        browser = null
         return
     }
 }

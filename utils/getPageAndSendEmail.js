@@ -8,7 +8,7 @@ async function getPageAndSendEmail(params) {
     const pageData = await getPageData.getData(params)
     const html = await ejs.renderFile(
         // ejs文件路径
-        "./views/mail.ejs",
+        path.resolve(__dirname, "../views/mail.ejs"),
         // 参数
         pageData // {memory, weather, one, news}
     )
