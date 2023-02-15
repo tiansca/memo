@@ -24,4 +24,20 @@ router.post('/',function(req, res, next) {
     }
 });
 
+// get接口只支持text类型邮件
+router.get('/',function(req, res, next) {
+    var type = 'text'
+    if(req.query.subject && req.query.to && req.query.content){
+        var isSend = send({
+            to:req.query.to,
+            subject:req.query.subject,
+            content:req.query.content
+        },type)
+        console.log(isSend)
+        res.send({data:0,msg:'发送成功'})
+    }else{
+        res.send({data:-1,msg:'发送失败'})
+    }
+});
+
 module.exports = router;

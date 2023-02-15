@@ -103,7 +103,7 @@ async function getData(params) {
         news
     }
     for (const key in pageData) {
-        // console.log(key, pageData[key])
+        console.log(key, pageData[key])
     }
     return pageData
 }

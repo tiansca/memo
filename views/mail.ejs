@@ -11,30 +11,32 @@
 </head>
 <body style="padding: 0;margin: 0">
 <div style="padding: 8px;max-width: 750px;margin: 0 auto;width: 100%;box-sizing: border-box;margin-top: 16px">
-    <div style="position: relative; padding-top: 38px;margin-bottom: 36px; border: 1px solid #dcdcdc;padding-bottom: 16px">
-        <div style="position: absolute;top: 8px; left: 8px">
-            <% if (weather.moreData.alert) { %>
-                <% weather.moreData.alert.forEach(function(item){%>
-                <span style="background: <%= item.level === '蓝色' ? '#3069F6' : (item.level === '黄色' ? '#FCFF10' : (item.level === '橙色' ? '#F79901' : '#D2302D' ))%>;color: #fff;padding: 3px 6px;margin-right: 8px;border-radius: 2px;text-shadow: 0 0 3px rgba(0,0,0,0.7)"><%=item.name %></span>
-                <% }) %>
-            <% } %>
-        </div>
-        <div class="weather-data" style="position: absolute;top: 8px;right: 8px">
-            <%= weather.date %>
-        </div>
-        <div style="display: flex;align-items: center;justify-content: center">
-            <img style="width: 100px" src="http://www.moji.com/templets/mojichina/images/weather/weather/w<%= weather.weatherType %>.png" alt="">
-            <div style="margin-left: 18px">
-                <div style="font-size: 18px;color: #333">
-                    <span><%= weather.city %>:</span>
-                    <span><%= weather.weather %></span>
-                </div>
-                <div style="font-size: 22px; color: cornflowerblue;margin-top: 12px">
-                    <%= weather.low %>℃ ~ <%= weather.high %>℃
+    <% if (weather) { %>
+        <div style="position: relative; padding-top: 38px;margin-bottom: 36px; border: 1px solid #dcdcdc;padding-bottom: 16px">
+            <div style="position: absolute;top: 8px; left: 8px">
+                <% if (weather.moreData && weather.moreData.alert) { %>
+                    <% weather.moreData.alert.forEach(function(item){%>
+                    <span style="background: <%= item.level === '蓝色' ? '#3069F6' : (item.level === '黄色' ? '#FCFF10' : (item.level === '橙色' ? '#F79901' : '#D2302D' ))%>;color: #fff;padding: 3px 6px;margin-right: 8px;border-radius: 2px;text-shadow: 0 0 3px rgba(0,0,0,0.7)"><%=item.name %></span>
+                    <% }) %>
+                <% } %>
+            </div>
+            <div class="weather-data" style="position: absolute;top: 8px;right: 8px">
+                <%= weather.date %>
+            </div>
+            <div style="display: flex;align-items: center;justify-content: center">
+                <img style="width: 100px" src="http://www.moji.com/templets/mojichina/images/weather/weather/w<%= weather.weatherType %>.png" alt="">
+                <div style="margin-left: 18px">
+                    <div style="font-size: 18px;color: #333">
+                        <span><%= weather.city %>:</span>
+                        <span><%= weather.weather %></span>
+                    </div>
+                    <div style="font-size: 22px; color: cornflowerblue;margin-top: 12px">
+                        <%= weather.low %>℃ ~ <%= weather.high %>℃
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    <% } %>
     <% if (memory.dayCount) { %>
         <div style="font-size: 24px; font-weight: 600; text-align: center;letter-spacing: 2px">
             <%= memory.text %>
