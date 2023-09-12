@@ -5,6 +5,7 @@ const axios = require('axios')
 const send = require('../utils/mail')
 const getPageAndSendEmail = require('../utils/getPageAndSendEmail')
 const {getData} = require("../utils/getPageData");
+const path = require('path')
 
 /* 邮件页面 */
 router.get('/page', async function (req, res, next) {
@@ -67,6 +68,25 @@ router.get('/send',async function (req, res, next) {
       error: e
     })
   }
+});
+router.get('/icon',async function (req, res, next) {
+  const iconCode = req.query.code
+  if (!iconCode) {
+    res.send("code is required")
+  }
+  const {data} = await axios.request({
+    url: `https://a.hecdn.net/img/common/icon/202106d/${iconCode}.png`,
+    method: 'get',
+    responseType: 'arraybuffer',
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36',
+      referer: 'https://a.hecdn.net/img/'
+    }
+  })
+  console.log(data)
+  // res.setEncoding("binary")
+  res.setHeader('Content-Type', 'image/png')
+  res.send(data)
 });
 
 module.exports = router;

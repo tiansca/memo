@@ -3,6 +3,7 @@ const jsdom = require('jsdom')
 const JSDOM = jsdom.JSDOM
 const getZhihuDetail = require('../utils/getZhihuDetail')
 const getNewsList = require('../utils/getNewsList')
+const regionMap = require('./region_map.json')
 
 const getOneData = async () => {
     const data = await axios.get('http://wufazhuce.com/')
@@ -18,18 +19,36 @@ const getWeather = async (city) => {
     if (!city) {
         return null
     }
-    const url = encodeURI(`http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=${city}&needMoreData=true&pageNo=1&pageSize=1`)
-    const { data } = await axios.request({
-        url: url,
-        method: 'get',
-        headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
+    try {
+        const weatherUrl = encodeURI(`https://devapi.qweather.com/v7/weather/3d?key=7ad3070c1ad34ab0b0e31606f507c7f4&location=${city}`)
+        const alertUrl = encodeURI(`https://devapi.qweather.com/v7/warning/now?key=7ad3070c1ad34ab0b0e31606f507c7f4&location=${city}`)
+        const res = await Promise.all([axios.request({
+            url: weatherUrl,
+            method: 'get',
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
+            }
+        }), axios.request({
+            url: alertUrl,
+            method: 'get',
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
+            }
+        })])
+        if (!res[0].data || !res[0].data.daily) {
+            return null
         }
-    })
-    if (data && data.data && data.data.list) {
-        return data.data.list[0]
+        const weatherData = res[0].data.daily[0]
+        const warningData = res[1].data
+        weatherData.city = regionMap[city].county || ''
+        weatherData.moreData = {
+            alert:  warningData.warning
+        }
+        return weatherData
+    } catch (e) {
+        console.log(e)
+        return {}
     }
-    return null
 }
 
 const getNews = async () => {
@@ -39,7 +58,10 @@ const getNews = async () => {
         url: listUrl,
         method: 'get',
         headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+            'Origin': 'https://www.zhihu.com',
+            'Referer': 'https://www.zhihu.com'
         }
     })
     // console.log(data)
