@@ -55,7 +55,7 @@
     <% if (news && news.length) { %>
         <div style="margin-top: 36px">
             <div style="font-size: 20px; font-weight: 600; margin: 30px 0 12px">知乎日报</div>
-            <div style="display: flex;flex-wrap: wrap;flex-shrink: 0">
+            <div>
                 <% news.forEach(function(item){%>
                     <a href="<%= item.link %>" target="_blank">
                         <img style="width: 100%; max-width: 450px" src="<%= item.img %>" />
