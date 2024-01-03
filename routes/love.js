@@ -23,6 +23,7 @@ router.get('/page', async function (req, res, next) {
   }
   try {
     const pageData = await getPageData.getData({city, day, showNews, dayType})
+    console.log(pageData)
     res.render('mail', pageData);
   } catch (e) {
     console.log(e)

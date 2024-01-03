@@ -24,7 +24,7 @@
                 <%= weather.fxDate %>
             </div>
             <div style="display: flex;align-items: center;justify-content: center">
-                <img style="width: 120px" src="http://tiansc.top:3001/love/icon?code=<%= weather.iconDay %>" alt="">
+                <img style="width: 120px" src="http://api.tiansc.top/api/memo/love/icon?code=<%= weather.iconDay %>" alt="">
                 <div style="margin-left: 18px">
                     <div style="font-size: 20px;color: #333">
                         <span><%= weather.city %>:</span>
@@ -54,19 +54,15 @@
 
     <% if (news && news.length) { %>
         <div style="margin-top: 36px">
-            <% news.forEach(function(item){%>
-                <% if (item.type === 'text') { %>
-                    <div style="font-size: 16px;margin: 24px 0 16px;color: #333"><%= item.data %></div>
-                <% } %>
-                <% if (item.type === 'img') { %>
-                    <img style="width: 100%" src="<%= item.data %>"></img>
-                <% } %>
-                <% if (item.type === 'video') { %>
-<!--                    <span>视频链接：</span>-->
-<!--                    <a target="_blank" href="<%= item.data %>"><%= item.data %></a>-->
-                    <video poster="<%= item.data.cover %>" style="width: 100%" src="<%= item.data.video %>" controls></video>
-                <% } %>
-            <% }) %>
+            <div style="font-size: 20px; font-weight: 600; margin: 30px 0 12px">知乎日报</div>
+            <div style="display: flex;flex-wrap: wrap;flex-shrink: 0">
+                <% news.forEach(function(item){%>
+                    <a href="<%= item.link %>" target="_blank">
+                        <img style="width: 100%; max-width: 450px" src="<%= item.img %>" />
+                        <div style="font-size: 16px;margin: 6px 0 26px;color: #333"><%= item.title %></div>
+                    </a>
+                <% }) %>
+            </div>
         </div>
     <% } %>
 

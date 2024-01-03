@@ -103,6 +103,39 @@ function getMemory(day) {
     return Math.ceil(dayCount)
 }
 
+// 知乎日报
+async function getZhihudaily() {
+    const data = await axios.request({
+        url: 'https://daily.zhihu.com/',
+        method: 'get',
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+            'Origin': 'https://www.zhihu.com',
+            'Referer': 'https://www.zhihu.com'
+        }
+    })
+
+    // console.log(data.data)
+    const document = new JSDOM(data.data).window.document;
+    const domList = document.querySelectorAll('.main-content-wrap .wrap .box')
+    const zhihuList = []
+    if (domList && domList.length) {
+        for (let a = 0; a < domList.length; a++) {
+            if (a >= 10) {
+                break
+            }
+            const obj = {}
+            obj.link = 'https://daily.zhihu.com' + domList[a].querySelector('.link-button').getAttribute('href')
+            obj.img = domList[a].querySelector('.preview-image').getAttribute('src')
+            obj.title = domList[a].querySelector('.title').innerHTML
+            zhihuList.push(obj)
+        }
+    }
+    console.log('知乎list', zhihuList.length)
+    return zhihuList
+}
+
 async function getData(params) {
     const {city, day, showNews, dayType} = params
     let memory = {} // 纪念日数据
@@ -116,7 +149,7 @@ async function getData(params) {
         memory.text = dayType
     }
     if (showNews) {
-        news = await getNews()
+        news = await getZhihudaily()
     }
     const pageData = {
         memory,
